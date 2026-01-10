@@ -1,0 +1,12 @@
+# reads
+*.fastq
+*.fq
+*.fastq.gz
+*.fq.gz
+
+
+
+# common junk
+*.tmp
+*.log
+.DS_Store
