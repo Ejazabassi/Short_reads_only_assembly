@@ -49,6 +49,38 @@ fastqc -o fastqc_reports --extract --svg --threads 8 ../00_raw_reads/*.fastq.gz
 conda activate 02_multiqc
 multiqc -p -o ./multiqc/fastqc_multiqc ./
 
+# run fastp for read trimming and quallity control
+cd ../02_process_reads
+conda activate 01_short_read_qc
+fastp -i ../00_raw_reads/codanics_1.fastq.gz -I ../00_raw_reads/codanics_2.fastq.gz -o ../02_process_reads/codanics_1.trimmed.fastq.gz -O ../02_process_reads/codanics_2.trimmed 
+.fastq.gz \ 03_qc_after_processing/-h fastp_report.html -j fastp_report.json -w 8 \
+-q 25 
+
+# fastqc and multiqc run on processed reads
+cd ../03_qc_after_processing || exit 1
+conda activate 01_short_read_qc
+mkdir fastqc_reports_processed
+fastqc -o fastqc_reports_processed --nogroup --threads 8 ../02_process_reads/*.trimmed.fastq.gz
+# to generate svg format reports
+fastqc -o fastqc_reports_processed --extract --svg --threads 8 ../02_process_reads/*.trimmed.fastq.gz       
+fastqc ../02_process_reads/*.trimmed.fastq.gz -o 
+# run multiqc on on fastqc files of processed reads
+conda activate 02_multiqc
+multiqc -p -o /03_qc_after_processing/multiqc/fastqc_multiqc_processed ./
+echo "Analysis complete."
+
+
+
+
+
+
+# previous commands for reference
+# change to qc_before_processing directory
+#cd 01_qc_before_processing || exit 1
+# run fastqc on raw reads
+#fastqc ../00_raw_reads/*.fastq.gz -o .
+# expert use case of fastqc
+#mkdir fastqc_reports
 
 
 
