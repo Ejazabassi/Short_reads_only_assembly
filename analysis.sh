@@ -66,7 +66,7 @@ fastqc -o fastqc_reports_processed --extract --svg --threads 8 ../02_process_rea
 fastqc ../02_process_reads/*.trimmed.fastq.gz -o 
 # run multiqc on on fastqc files of processed reads
 conda activate 02_multiqc
-multiqc -p -o /03_qc_after_processing/multiqc/fastqc_multiqc_processed ./
+multiqc -p -o ./multiqc/fastqc_multiqc_processed ./
 echo "Analysis complete."
 
 
